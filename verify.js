@@ -24,7 +24,8 @@ function looksLikeAsymmetricKey(key) {
   if (typeof key !== 'string') {
     return true;
   }
-  return /^\s*(-----BEGIN |ssh-|\{)/.test(key);
+  // OpenSSL accepts text before a PEM header, so BEGIN must match anywhere.
+  return key.indexOf('-----BEGIN') !== -1 || /^\s*(ssh-|\{)/.test(key);
 }
 
 module.exports = function (jwtString, secretOrPublicKey, options, callback) {
